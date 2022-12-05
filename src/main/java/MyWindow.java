@@ -1,15 +1,10 @@
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.labels.ItemLabelAnchor;
-import org.jfree.chart.labels.ItemLabelPosition;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
-import org.jfree.chart.renderer.xy.XYAreaRenderer;
-import org.jfree.chart.ui.TextAnchor;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
@@ -22,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
+
+/*ZADANIE 2 - STANISŁAW KURZYP 264477*/
 
 public class MyWindow implements ActionListener, ChangeListener {
     private boolean[] boxesChecked;
@@ -91,7 +88,7 @@ public class MyWindow implements ActionListener, ChangeListener {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         dataset.addValue(0, "", ""); //creating empty chart
 
-        JFreeChart chart = ChartFactory.createBarChart("Chart", "X", "y", dataset,
+        JFreeChart chart = ChartFactory.createBarChart("Chart", "X", "Y", dataset,
                 PlotOrientation.VERTICAL, false, true, false);
 
         window.chartPanel.setLayout(new BorderLayout());
@@ -102,7 +99,7 @@ public class MyWindow implements ActionListener, ChangeListener {
         frame.setVisible(true);
     }
 
-    public void createChart() { //Zmiana szerokości pasków/odstępów między nimi
+    public void createChart() {
         chartPanel.removeAll();
         chartPanel.revalidate();
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -110,26 +107,21 @@ public class MyWindow implements ActionListener, ChangeListener {
         for (int i = 0; i < 10; i++) {
             if (boxesChecked[i]) {
                 try {
-                    System.out.println("TEXT field" + i + ":" + input[i]);
+                    //System.out.println("TEXT field" + i + ":" + input[i]);
                     dataset.setValue(Integer.parseInt(input[i]),String.valueOf(i), input[i]);
                 } catch (NumberFormatException e) {
-                    System.out.println("Wrong format" + input[i]);
+                    String message = "Błąd w polu: " + (i +1) + "\n Należy podac liczbe całkowitą";
+                    JOptionPane.showMessageDialog(null, message);
+
                 }
             }
         }
         JFreeChart chart = ChartFactory.createBarChart("Chart", "X", "y", dataset);
 
-
-        //CategoryPlot categoryPlot = (CategoryPlot) chart.getPlot();
         CategoryPlot categoryPlot = chart.getCategoryPlot();
         ((BarRenderer) categoryPlot.getRenderer()).setBarPainter(new StandardBarPainter());
         BarRenderer renderer = (BarRenderer) chart.getCategoryPlot().getRenderer();
 
-//        final CategoryItemRenderer renderer = new CustomRenderer(
-//                new Paint[] {Color.red, Color.blue, Color.green,
-//                        Color.yellow, Color.orange, Color.cyan,
-//                        Color.magenta, Color.blue, Color.darkGray, Color.PINK}
-//        );
 
         Paint []barColors = new Paint[10];
         barColors[0] = new Color(17, 65, 74);
@@ -144,21 +136,11 @@ public class MyWindow implements ActionListener, ChangeListener {
         barColors[9] = new Color(150, 33, 62);
 
 
-
-
-        //ZMIANA WYGLADU
-        //renderer.setSeriesPaint(0, new Color(28,120,140));
         chart.setBackgroundPaint(new Color(103,194,190));
         chart.getPlot().setBackgroundPaint(new Color(103,194,190));
         renderer.setItemMargin(-0.75);
         renderer.setMaximumBarWidth(0.5);
-        //renderer.setDefaultOutlineStroke();
 
-//        final ItemLabelPosition p = new ItemLabelPosition(
-//                ItemLabelAnchor.CENTER, TextAnchor.CENTER, TextAnchor.CENTER, 45.0
-//        );
-//        renderer.setDefaultPositiveItemLabelPosition(p);
-//        categoryPlot.setRenderer(renderer);
 
         int barNumber=0;
         int counter=0;
@@ -179,16 +161,6 @@ public class MyWindow implements ActionListener, ChangeListener {
         chartPanel.add(new ChartPanel(chart));
         chartPanel.repaint();
     }
-
- /*   class CustomRenderer extends BarRenderer{
-        private Paint[] colors;
-        public CustomRenderer (final Paint[] colors){
-            this.colors=colors;
-        }
-        public Paint getItemPaint(final int row, final int column){
-            return this.colors[column % this.colors.length];
-        }
-    }*/
 
     public void generateTextFields(){
         Collections.addAll(textFields,tf1,tf2,tf3,tf4,tf5,tf6,tf7,tf8,tf9,tf10);
