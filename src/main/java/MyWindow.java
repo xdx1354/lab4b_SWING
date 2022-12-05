@@ -8,6 +8,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
+import org.jfree.chart.renderer.xy.XYAreaRenderer;
 import org.jfree.chart.ui.TextAnchor;
 import org.jfree.data.category.DefaultCategoryDataset;
 
@@ -110,7 +111,7 @@ public class MyWindow implements ActionListener, ChangeListener {
             if (boxesChecked[i]) {
                 try {
                     System.out.println("TEXT field" + i + ":" + input[i]);
-                    dataset.addValue(Integer.parseInt(input[i]), "", input[i]);
+                    dataset.setValue(Integer.parseInt(input[i]),String.valueOf(i), input[i]);
                 } catch (NumberFormatException e) {
                     System.out.println("Wrong format" + input[i]);
                 }
@@ -119,8 +120,8 @@ public class MyWindow implements ActionListener, ChangeListener {
         JFreeChart chart = ChartFactory.createBarChart("Chart", "X", "y", dataset);
 
 
-        CategoryPlot categoryPlot = (CategoryPlot) chart.getPlot();
-        //CategoryPlot categoryPlot = chart.getCategoryPlot();
+        //CategoryPlot categoryPlot = (CategoryPlot) chart.getPlot();
+        CategoryPlot categoryPlot = chart.getCategoryPlot();
         ((BarRenderer) categoryPlot.getRenderer()).setBarPainter(new StandardBarPainter());
         BarRenderer renderer = (BarRenderer) chart.getCategoryPlot().getRenderer();
 
@@ -132,23 +133,26 @@ public class MyWindow implements ActionListener, ChangeListener {
 
         Paint []barColors = new Paint[10];
         barColors[0] = new Color(17, 65, 74);
-        barColors[1] = new Color(17, 74, 60);
-        barColors[2] = new Color(17, 74, 38);
-        barColors[3] = new Color(74, 17, 17);
-        barColors[4] = new Color(31, 17, 74);
-        barColors[5] = new Color(74, 17, 59);
-        barColors[6] = new Color(33, 150, 145);
-        barColors[7] = new Color(33, 150, 37);
-        barColors[8] = new Color(150, 100, 33);
+        barColors[1] = new Color(150, 100, 33);
+        barColors[2] = new Color(17, 74, 60);
+        barColors[3]= new Color(33, 150, 145);
+        barColors[4] = new Color(17, 74, 38);
+        barColors[5] = new Color(74, 17, 17);
+        barColors[6] = new Color(33, 150, 37);
+        barColors[7] = new Color(31, 17, 74);
+        barColors[8] = new Color(74, 17, 59);
         barColors[9] = new Color(150, 33, 62);
 
 
 
 
         //ZMIANA WYGLADU
-        renderer.setSeriesPaint(0, new Color(28,120,140));
+        //renderer.setSeriesPaint(0, new Color(28,120,140));
         chart.setBackgroundPaint(new Color(103,194,190));
         chart.getPlot().setBackgroundPaint(new Color(103,194,190));
+        renderer.setItemMargin(-0.75);
+        renderer.setMaximumBarWidth(0.5);
+        //renderer.setDefaultOutlineStroke();
 
 //        final ItemLabelPosition p = new ItemLabelPosition(
 //                ItemLabelAnchor.CENTER, TextAnchor.CENTER, TextAnchor.CENTER, 45.0
@@ -161,7 +165,7 @@ public class MyWindow implements ActionListener, ChangeListener {
         for(boolean b:boxesChecked){
             try{
                 if(b){
-                    //renderer.setBarPainter();
+                    renderer.setSeriesPaint(barNumber,barColors[counter]);
                     barNumber++;
                 }
             }
